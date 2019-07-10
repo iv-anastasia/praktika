@@ -1,0 +1,55 @@
+//---------------------------------------------------------------------------
+#include <vcl.h>
+#pragma hdrstop
+#include <iostream>
+#include <string.h>
+#include <Windows.h>
+//---------------------------------------------------------------------------
+using namespace std;
+#pragma argsused
+HKEY create_key() { 
+HKEY hKey; 
+LPCWSTR str = L"Lab2";
+DWORD value = 0;
+if (RegCreateKeyEx(HKEY_CURRENT_USER, str, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, NULL) == ERROR_SUCCESS) {
+cout « endl « "input value: ";
+cin » value; 
+RegSetValueEx(hKey, nullptr, 0, REG_DWORD, (const BYTE*)&value, sizeof(value)); 
+cout « "2. success \n"; 
+return hKey; 
+}
+
+void delete_key() { 
+LPCWSTR str = L"Lab2"; 
+if (RegDeleteKeyEx(HKEY_CURRENT_USER, str, KEY_WOW64_64KEY, NULL) == ERROR_SUCCESS) { 
+cout « "2. success \n"; 
+} 
+else cout « "fail\n";
+
+}
+
+int main(int argc, char* argv[])
+{
+SetConsoleOutputCP (1251);
+SetConsoleCP (1251);
+char choice = '0'; 
+HKEY khnd; 
+cout « "[c] - create key\n[d] - delete and close key\n"; 
+
+while (choice != ' ') { 
+cout « "Input choice: "; 
+cin » choice; 
+if (choice == 'c') { 
+khnd = create_key(); 
+} 
+else if (choice == 'd') { 
+delete_key(); 
+} 
+} 
+
+RegCloseKey(HKEY_CURRENT_USER); 
+
+system("pause");
+        return 0;
+}
+//---------------------------------------------------------------------------
